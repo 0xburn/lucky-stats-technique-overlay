@@ -8,6 +8,8 @@ MIT licensed: use it, modify it, ship your own tools, or build commercial apps.
 your own replay renderer or gameplay video and synchronize by Slippi frame.
 The included demo previews labels on a plain background.
 
+![Standalone overlay demo with a Slippi replay loaded, showing Tech in place and Up tilt inputs on the frame timeline.](docs/images/replay-loaded.png)
+
 ## Run the demo
 
 Requires Node.js **22.18+** (or Node 24) and npm.
