@@ -99,3 +99,33 @@ test('double laser counts projectile spawns within the same airtime', () => {
   d.push(6,entry(345,air),[{typeId:55}]);
   assert.equal(d.events.at(-1).label,'Laser');
 });
+
+test('same-frame air dodge landing detects wavedash and keeps its input', () => {
+  const d=createTechniqueDetector();
+  [14,24,24,24,24,43].forEach((s,i)=>d.push(i,entry(s,{positionY:0},s===43?{joystickX:-.71,joystickY:-.69,physicalButtons:0x20}:{})));
+  assert.equal(d.events.at(-1).label,'Wavedash');
+  assert.deepEqual(d.events.at(-1).inputs,['◉ ↙','R']);
+});
+test('same-frame falling dodge landing is a waveland, recovery landing is not', () => {
+  for(const state of [25,26,27,28,29,30,31,32,33,34]){
+    const d=createTechniqueDetector();d.push(0,entry(state));d.push(1,entry(43,{}, {physicalButtons:0x40,joystickY:-1}));
+    assert.equal(d.events.at(-1).label,'Waveland');
+  }
+  for(const state of [35,36,37,352,244]){
+    const d=createTechniqueDetector();d.push(0,entry(state));d.push(1,entry(43));assert.equal(d.events.length,0);
+  }
+});
+test('short jump to sloped surface is a wavedash; travel to platform is a waveland', () => {
+  for(const jumps of [1,6]){
+    const d=createTechniqueDetector();d.push(0,entry(24,{positionY:0}));
+    for(let f=1;f<=jumps;f++)d.push(f,entry(25,{positionY:f,actionStateCounter:f}));
+    d.push(jumps+1,entry(43,{positionY:jumps}));
+    assert.equal(d.events.at(-1).label,jumps===1?'Wavedash':'Waveland');
+  }
+});
+test('long air dodge landing and normal landing do not manufacture wavedashes', () => {
+  const d=createTechniqueDetector();d.push(0,entry(29));
+  for(let f=1;f<=20;f++)d.push(f,entry(236,{actionStateCounter:f}));
+  d.push(21,entry(43));assert.ok(!d.events.some((e:any)=>['Wavedash','Waveland'].includes(e.label)));
+  const normal=createTechniqueDetector();normal.push(0,entry(25));normal.push(1,entry(42));assert.equal(normal.events.length,0);
+});

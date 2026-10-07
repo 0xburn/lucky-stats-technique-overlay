@@ -95,13 +95,22 @@ export function createTechniqueDetector() {
         inputs = history[start].pre;
       }
     }
-    if (changed && state === 43 && old === 236) {
-      const dodge = history.findLastIndex(x => x.post.actionStateId !== 236) + 1;
-      inputs = history[dodge]?.pre ?? pre;
-      const knee = history.findLast(x => x.post.actionStateId === 24);
-      const sameHeight = knee && Number.isFinite(post.positionY) && Number.isFinite(knee.post.positionY)
-        && Math.abs(post.positionY - knee.post.positionY) < .1;
-      action = [sameHeight ? 'Wavedash' : 'Waveland', 'movement'];
+    // A dodge can start and land within one frame: no post-frame 236 is
+    // recorded. Special landing from controlled jump/fall states still proves
+    // the landing; exclude special-fall/recovery states (35+).
+    // Match slippi-js's wavedash initiation window, including moving surfaces.
+    if (changed && state === 43 && (old === 236 || old >= 24 && old <= 34)) {
+      const recent = history.slice(-14);
+      const longDodge = recent.length === 14 && recent.every(x => x.post.actionStateId === 236);
+      if (!longDodge) {
+        const dodge = history.findLastIndex(x => x.post.actionStateId !== 236) + 1;
+        inputs = old === 236 ? history[dodge]?.pre ?? pre : pre;
+        const knee = recent.findLast(x => x.post.actionStateId === 24);
+        const jumpFrames = recent.filter(x => x.post.actionStateId >= 25 && x.post.actionStateId <= 34).length;
+        const knownHeight = knee && Number.isFinite(post.positionY) && Number.isFinite(knee.post.positionY);
+        const changedHeight = knownHeight && Math.abs(post.positionY - knee.post.positionY) >= .1;
+        action = [knee && (jumpFrames < 5 || knownHeight && !changedHeight) ? 'Wavedash' : 'Waveland', 'movement'];
+      }
     }
     if (state >= 70 && state <= 74 && [1,2].includes(post.lCancelStatus)
       && (changed || post.lCancelStatus !== prev?.post.lCancelStatus)) {
