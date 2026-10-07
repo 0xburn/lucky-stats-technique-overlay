@@ -1,0 +1,6 @@
+.lst-overlay { position:absolute; inset:0; display:flex; flex-wrap:wrap; justify-content:space-between; align-content:flex-start; gap:16px; padding:16px; pointer-events:none; color:#fff; font:600 clamp(14px,2.5vw,28px)/1.35 system-ui,sans-serif; text-shadow:0 2px 4px #000,0 0 8px #000; }
+.lst-player { max-width:46%; overflow-wrap:anywhere; }
+.lst-player small { display:block; font-size:.55em; font-weight:400; }
+.lst-inputs { margin-left:.4em; color:#6ee7b7; }
+.lst-defense { font-size:.8em; color:#a7d9ff; }
+.lst-defense:empty { display:none; }

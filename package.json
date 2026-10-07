@@ -1,0 +1,39 @@
+{
+  "name": "lucky-stats-technique-overlay",
+  "version": "0.1.0",
+  "description": "Frame-based Melee technique detection and overlays for Slippi replays.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Lucky 7s Melee LLC (https://LuckyStats.gg)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xburn/lucky-stats-technique-overlay.git"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./overlay": "./src/overlay.mjs",
+    "./overlay.css": "./src/overlay.css"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "NOTICE.md",
+    "README.md",
+    "docs",
+    "AGENTS.md"
+  ],
+  "scripts": {
+    "test": "node --test --experimental-strip-types test/*.test.mts test/*.test.mjs",
+    "dev": "vite demo --host 127.0.0.1",
+    "build": "vite build demo --outDir ../dist --emptyOutDir"
+  },
+  "dependencies": {
+    "@slippi/slippi-js": "9.1.2"
+  },
+  "devDependencies": {
+    "vite": "^7.3.7"
+  }
+}

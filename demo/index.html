@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lucky Stats Technique Overlay</title></head>
+<body><main>
+<h1>Slippi Technique Overlay</h1>
+<p>By <a href="https://LuckyStats.gg">Lucky 7s Melee LLC · LuckyStats.gg</a></p>
+<label>Replay file <input id="file" type="file" accept=".slp"></label>
+<p id="status" role="status">Choose a replay to inspect its techniques. Processing stays in your browser.</p>
+<div id="players"></div>
+<div id="preview"><div class="placeholder">Overlay preview</div></div>
+<div class="controls"><button id="play" disabled>Play</button><label>Frame <input id="frame" type="number" disabled></label><label>Speed <select id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option></select></label><button id="export" disabled>Export technique events</button></div>
+<input id="seek" type="range" aria-label="Replay frame" disabled>
+<p>This preview shows labels on a frame timeline. Connect the overlay to your own video or replay renderer to show gameplay.</p>
+</main><script type="module" src="./main.mjs"></script></body></html>
